@@ -35,36 +35,34 @@ describe('transform', () => {
   })
 
   describe('filter', () => {
-    describe('filter', () => {
-      it('should filter values based on predicate', () => {
-        const numbers = flow([1, 2, 3, 4]).pipe(filter((x) => x % 2 === 0))
+    it('should filter values based on predicate', () => {
+      const numbers = flow([1, 2, 3, 4]).pipe(filter((x) => x % 2 === 0))
 
-        const result = [...numbers]
+      const result = [...numbers]
 
-        expect(result).toEqual([2, 4])
-      })
+      expect(result).toEqual([2, 4])
+    })
 
-      it('should work with map in composition', () => {
-        const numbers = flow([1, 2, 3, 4]).pipe(
-          map((x) => x * 2),
-          filter((x) => x > 4)
-        )
+    it('should work with map in composition', () => {
+      const numbers = flow([1, 2, 3, 4]).pipe(
+        map((x) => x * 2),
+        filter((x) => x > 4)
+      )
 
-        const result = [...numbers]
+      const result = [...numbers]
 
-        expect(result).toEqual([6, 8])
-      })
+      expect(result).toEqual([6, 8])
+    })
 
-      it('should maintain types through filtering', () => {
-        const items = flow(['a', '', 'b', '', 'c']).pipe(
-          filter((x) => x !== ''),
-          map((x) => x.toUpperCase())
-        )
+    it('should maintain types through filtering', () => {
+      const items = flow(['a', '', 'b', '', 'c']).pipe(
+        filter((x) => x !== ''),
+        map((x) => x.toUpperCase())
+      )
 
-        const result = [...items]
+      const result = [...items]
 
-        expect(result).toEqual(['A', 'B', 'C'])
-      })
+      expect(result).toEqual(['A', 'B', 'C'])
     })
   })
 })
