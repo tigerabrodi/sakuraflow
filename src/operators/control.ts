@@ -51,3 +51,29 @@ export function takeWhile<TValue>(
     return flow(takeWhileGenerator())
   }
 }
+
+export function skipWhile<TValue>(
+  predicate: (value: TValue) => boolean
+): Operation<TValue, TValue> {
+  return (flowInput: Flow<TValue>): Flow<TValue> => {
+    function* skipWhileGenerator() {
+      // We start by skipping all values
+      let isSkipping = true
+
+      for (const value of flowInput) {
+        // If we're skipping which starts as true
+        // and the predicate returns false, we stop skipping
+        // predicate being false means that the condition should not be skipped anymore
+        if (isSkipping && !predicate(value)) {
+          isSkipping = false
+        }
+
+        if (!isSkipping) {
+          yield value
+        }
+      }
+    }
+
+    return flow(skipWhileGenerator())
+  }
+}

@@ -1,5 +1,5 @@
 import { flow } from '../core/flow'
-import { skip, take, takeWhile } from '../operators/control'
+import { skip, skipWhile, take, takeWhile } from '../operators/control'
 import { map } from '../operators/transform'
 
 describe('control operators', () => {
@@ -85,6 +85,46 @@ describe('control operators', () => {
 
       const result = [...numbers]
       expect(result).toEqual([])
+    })
+  })
+
+  describe('skipWhile', () => {
+    it('should skip items while predicate is true', () => {
+      const numbers = flow([1, 2, 3, 6, 2, 1]).pipe(skipWhile((x) => x < 5))
+
+      const result = [...numbers]
+      expect(result).toEqual([6, 2, 1])
+    })
+
+    it('should work with other operators', () => {
+      const numbers = flow([1, 2, 3, 4, 5]).pipe(
+        map((x) => x * 2),
+        skipWhile((x) => x <= 6)
+      )
+
+      const result = [...numbers]
+      expect(result).toEqual([8, 10])
+    })
+
+    it('should handle empty source', () => {
+      const numbers = flow([]).pipe(skipWhile((x) => x < 5))
+
+      const result = [...numbers]
+      expect(result).toEqual([])
+    })
+
+    it('should handle always-true predicate', () => {
+      const numbers = flow([1, 2, 3]).pipe(skipWhile(() => true))
+
+      const result = [...numbers]
+      expect(result).toEqual([])
+    })
+
+    it('should include all items after predicate becomes false', () => {
+      const numbers = flow([1, 4, 2, 3, 5, 2]).pipe(skipWhile((x) => x < 4))
+
+      const result = [...numbers]
+      expect(result).toEqual([4, 2, 3, 5, 2])
     })
   })
 })
