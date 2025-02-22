@@ -33,3 +33,21 @@ export function skip<TValue>(n: number): Operation<TValue, TValue> {
     return flow(skipGenerator())
   }
 }
+
+export function takeWhile<TValue>(
+  predicate: (value: TValue) => boolean
+): Operation<TValue, TValue> {
+  return (flowInput: Flow<TValue>): Flow<TValue> => {
+    function* takeWhileGenerator() {
+      for (const value of flowInput) {
+        // Stop the iteration if the predicate returns false
+        if (!predicate(value)) break
+
+        // While predicate returns true, yield values
+        yield value
+      }
+    }
+
+    return flow(takeWhileGenerator())
+  }
+}
