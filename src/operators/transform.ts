@@ -21,3 +21,20 @@ export function map<TSource, TResult>(
     return flow(transformGenerator())
   }
 }
+
+export function filter<TValue>(
+  predicate: (value: TValue) => boolean
+): Operation<TValue, TValue> {
+  return (flowInput: Flow<TValue>): Flow<TValue> => {
+    function* filterGenerator() {
+      for (const value of flowInput) {
+        // Only yield values that pass the predicate
+        if (predicate(value)) {
+          yield value
+        }
+      }
+    }
+
+    return flow(filterGenerator())
+  }
+}
