@@ -1,5 +1,5 @@
 import { flow } from '../core/flow'
-import { take } from '../operators/control'
+import { skip, take } from '../operators/control'
 import { map } from '../operators/transform'
 
 describe('control operators', () => {
@@ -29,29 +29,29 @@ describe('control operators', () => {
     })
   })
 
-  // describe('skip', () => {
-  //   it('should skip first n items', () => {
-  //     const numbers = flow([1, 2, 3, 4, 5]).pipe(skip(2))
+  describe('skip', () => {
+    it('should skip first n items', () => {
+      const numbers = flow([1, 2, 3, 4, 5]).pipe(skip(2))
 
-  //     const result = [...numbers]
-  //     expect(result).toEqual([3, 4, 5])
-  //   })
+      const result = [...numbers]
+      expect(result).toEqual([3, 4, 5])
+    })
 
-  //   it('should work with other operators', () => {
-  //     const numbers = flow([1, 2, 3, 4, 5]).pipe(
-  //       skip(2),
-  //       map((x) => x * 2)
-  //     )
+    it('should work with other operators', () => {
+      const numbers = flow([1, 2, 3, 4, 5]).pipe(
+        skip(2),
+        map((x) => x * 2)
+      )
 
-  //     const result = [...numbers]
-  //     expect(result).toEqual([6, 8, 10])
-  //   })
+      const result = [...numbers]
+      expect(result).toEqual([6, 8, 10])
+    })
 
-  //   it('should handle skipping more than available', () => {
-  //     const numbers = flow([1, 2, 3]).pipe(skip(5))
+    it('should handle skipping more than available', () => {
+      const numbers = flow([1, 2, 3]).pipe(skip(5))
 
-  //     const result = [...numbers]
-  //     expect(result).toEqual([])
-  //   })
-  // })
+      const result = [...numbers]
+      expect(result).toEqual([])
+    })
+  })
 })
