@@ -22,6 +22,7 @@ export function skip<TValue>(n: number): Operation<TValue, TValue> {
     function* skipGenerator() {
       let count = 0
       for (const value of flowInput) {
+        // only start yielding values after we've skipped n items
         if (count >= n) {
           yield value
         }
