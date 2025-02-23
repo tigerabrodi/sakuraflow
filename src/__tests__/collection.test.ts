@@ -1,5 +1,5 @@
 import { flow } from '../core/flow'
-import { batch } from '../operators/collection'
+import { batch, window } from '../operators/collection'
 import { map } from '../operators/transform'
 
 describe('collection operators', () => {
@@ -31,6 +31,43 @@ describe('collection operators', () => {
 
     it('should handle batch size of 1', () => {
       const numbers = flow([1, 2, 3]).pipe(batch(1))
+
+      const result = [...numbers]
+      expect(result).toEqual([[1], [2], [3]])
+    })
+  })
+
+  describe('window', () => {
+    it('should create sliding windows of specified size', () => {
+      const numbers = flow([1, 2, 3, 4, 5]).pipe(window(3))
+
+      const result = [...numbers]
+      expect(result).toEqual([
+        [1, 2, 3],
+        [2, 3, 4],
+        [3, 4, 5],
+      ])
+    })
+
+    it('should work with other operators', () => {
+      const numbers = flow([1, 2, 3, 4, 5]).pipe(
+        window(3),
+        map((win) => win.reduce((a, b) => a + b) / win.length) // moving average
+      )
+
+      const result = [...numbers]
+      expect(result).toEqual([2, 3, 4]) // avg of [1,2,3], [2,3,4], [3,4,5]
+    })
+
+    it('should handle window size larger than source', () => {
+      const numbers = flow([1, 2]).pipe(window(3))
+
+      const result = [...numbers]
+      expect(result).toEqual([])
+    })
+
+    it('should handle window size of 1', () => {
+      const numbers = flow([1, 2, 3]).pipe(window(1))
 
       const result = [...numbers]
       expect(result).toEqual([[1], [2], [3]])
