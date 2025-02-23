@@ -3,7 +3,6 @@ import { Flow } from '../core/types'
 
 import { Operation } from '../core/types'
 
-// We'll create this as a factory function that returns an Operation
 export function map<TSource, TResult>(
   transform: (value: TSource) => TResult
 ): Operation<TSource, TResult> {
