@@ -7,7 +7,23 @@ export class FlowImpl<TValue> implements Flow<TValue> {
   // const result = [...flow([1, 2, 3])]
   // and get [1, 2, 3]
   *[Symbol.iterator](): Iterator<TValue> {
-    yield* this.source
+    if (Symbol.iterator in this.source) {
+      yield* this.source
+    } else {
+      throw new Error('Cannot synchronously iterate over async source')
+    }
+  }
+
+  async *[Symbol.asyncIterator](): AsyncIterator<TValue> {
+    if (Symbol.asyncIterator in this.source) {
+      yield* this.source
+    } else if (Symbol.iterator in this.source) {
+      yield* this.source
+    } else {
+      // Should never happen, we just do this for type safety
+      // shouldn't happen because source is always iterable
+      throw new Error('Source must be either sync or async iterable')
+    }
   }
 
   pipe<A>(op1: Operation<TValue, A>): Flow<A>

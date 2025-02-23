@@ -1,11 +1,12 @@
 // Basic types remain the same
-export type IterableInput<T> = Iterable<T>
+export type IterableInput<T> = Iterable<T> | AsyncIterable<T>
 export type Operation<TSource, TResult> = (flow: Flow<TSource>) => Flow<TResult>
 
 // We don't need the complex type machinery for unpacking tuples anymore
 // since we're using explicit overloads
 export interface Flow<TValue> {
   [Symbol.iterator](): Iterator<TValue>
+  [Symbol.asyncIterator](): AsyncIterator<TValue>
 
   pipe<A>(op1: Operation<TValue, A>): Flow<A>
 
