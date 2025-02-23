@@ -33,4 +33,54 @@ export interface Flow<TValue> {
     op4: Operation<C, D>,
     op5: Operation<D, E>
   ): Flow<E>
+  pipe<A, B, C, D, E, F>(
+    op1: Operation<TValue, A>,
+    op2: Operation<A, B>,
+    op3: Operation<B, C>,
+    op4: Operation<C, D>,
+    op5: Operation<D, E>,
+    op6: Operation<E, F>
+  ): Flow<F>
+  pipe<A, B, C, D, E, F, G>(
+    op1: Operation<TValue, A>,
+    op2: Operation<A, B>,
+    op3: Operation<B, C>,
+    op4: Operation<C, D>,
+    op5: Operation<D, E>,
+    op6: Operation<E, F>,
+    op7: Operation<F, G>
+  ): Flow<G>
+  pipe<A, B, C, D, E, F, G, H>(
+    op1: Operation<TValue, A>,
+    op2: Operation<A, B>,
+    op3: Operation<B, C>,
+    op4: Operation<C, D>,
+    op5: Operation<D, E>,
+    op6: Operation<E, F>,
+    op7: Operation<F, G>,
+    op8: Operation<G, H>
+  ): Flow<H>
+  pipe<A, B, C, D, E, F, G, H, I>(
+    op1: Operation<TValue, A>,
+    op2: Operation<A, B>,
+    op3: Operation<B, C>,
+    op4: Operation<C, D>,
+    op5: Operation<D, E>,
+    op6: Operation<E, F>,
+    op7: Operation<F, G>,
+    op8: Operation<G, H>,
+    op9: Operation<H, I>
+  ): Flow<I>
+  pipe<A, B, C, D, E, F, G, H, I, J>(
+    op1: Operation<TValue, A>,
+    op2: Operation<A, B>,
+    op3: Operation<B, C>,
+    op4: Operation<C, D>,
+    op5: Operation<D, E>,
+    op6: Operation<E, F>,
+    op7: Operation<F, G>,
+    op8: Operation<G, H>,
+    op9: Operation<H, I>,
+    op10: Operation<I, J>
+  ): Flow<J>
 }

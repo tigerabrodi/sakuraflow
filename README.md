@@ -12,7 +12,7 @@ A lightweight, memory-efficient library for working with generator functions in 
 
 ## Limitations
 
-- 🚫 Maximum 5 operations inside a pipe
+- 🚫 Maximum 10 operations inside a pipe
 
 ## Installation
 
