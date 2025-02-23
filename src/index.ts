@@ -1,2 +1,6 @@
 export * from './core/flow'
+export * from './operators/async'
+export * from './operators/collection'
+export * from './operators/combine'
+export * from './operators/control'
 export * from './operators/transform'
