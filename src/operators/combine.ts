@@ -21,3 +21,48 @@ export function concat<TValue>(
     return flow(concatGenerator())
   }
 }
+
+export function zip<TValue, TOther>(
+  otherFlow: Flow<TOther>
+): Operation<TValue, [TValue, TOther]> {
+  return (source: Flow<TValue>): Flow<[TValue, TOther]> => {
+    // Sync version
+    function* syncZipGenerator() {
+      const sourceIterator = source[Symbol.iterator]()
+      const otherIterator = otherFlow[Symbol.iterator]()
+
+      while (true) {
+        const sourceNext = sourceIterator.next()
+        const otherNext = otherIterator.next()
+
+        if (sourceNext.done || otherNext.done) break
+
+        yield [sourceNext.value, otherNext.value] as [TValue, TOther]
+      }
+    }
+
+    // Async version
+    async function* asyncZipGenerator() {
+      const sourceIterator = source[Symbol.asyncIterator]()
+      const otherIterator = otherFlow[Symbol.asyncIterator]()
+
+      while (true) {
+        const [sourceNext, otherNext] = await Promise.all([
+          sourceIterator.next(),
+          otherIterator.next(),
+        ])
+
+        if (sourceNext.done || otherNext.done) break
+
+        yield [sourceNext.value, otherNext.value] as [TValue, TOther]
+      }
+    }
+
+    const isAsync = source.isAsync() || otherFlow.isAsync()
+
+    if (isAsync) {
+      return flow(asyncZipGenerator())
+    }
+    return flow(syncZipGenerator())
+  }
+}

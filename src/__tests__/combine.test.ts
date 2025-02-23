@@ -1,5 +1,5 @@
 import { flow } from '../core/flow'
-import { concat } from '../operators/combine'
+import { concat, zip } from '../operators/combine'
 import { map } from '../operators/transform'
 
 describe('combine operators', () => {
@@ -37,62 +37,62 @@ describe('combine operators', () => {
     })
   })
 
-  // describe('zip', () => {
-  //   it('should combine values from two flows', () => {
-  //     const numbers = flow([1, 2]).pipe(zip(flow(['a', 'b'])))
+  describe('zip', () => {
+    it.only('should combine values from two flows', () => {
+      const numbers = flow([1, 2]).pipe(zip(flow(['a', 'b'])))
 
-  //     const result = [...numbers]
-  //     expect(result).toEqual([
-  //       [1, 'a'],
-  //       [2, 'b'],
-  //     ])
-  //   })
+      const result = [...numbers]
+      expect(result).toEqual([
+        [1, 'a'],
+        [2, 'b'],
+      ])
+    })
 
-  //   it('should stop at shortest flow', () => {
-  //     const numbers = flow([1, 2, 3]).pipe(zip(flow(['a', 'b'])))
+    it('should stop at shortest flow', () => {
+      const numbers = flow([1, 2, 3]).pipe(zip(flow(['a', 'b'])))
 
-  //     const result = [...numbers]
-  //     expect(result).toEqual([
-  //       [1, 'a'],
-  //       [2, 'b'],
-  //     ])
-  //   })
+      const result = [...numbers]
+      expect(result).toEqual([
+        [1, 'a'],
+        [2, 'b'],
+      ])
+    })
 
-  //   it('should work with transformations', () => {
-  //     const numbers = flow([1, 2]).pipe(
-  //       map((x) => x * 2),
-  //       zip(flow(['a', 'b'])),
-  //       map(([num, str]) => `${str}${num}`)
-  //     )
+    it('should work with transformations', () => {
+      const numbers = flow([1, 2]).pipe(
+        map((x) => x * 2),
+        zip(flow(['a', 'b'])),
+        map(([num, str]) => `${str}${num}`)
+      )
 
-  //     const result = [...numbers]
-  //     expect(result).toEqual(['a2', 'b4'])
-  //   })
+      const result = [...numbers]
+      expect(result).toEqual(['a2', 'b4'])
+    })
 
-  //   it('should handle empty flows', () => {
-  //     const numbers = flow([1, 2]).pipe(zip(flow([])))
+    it('should handle empty flows', () => {
+      const numbers = flow([1, 2]).pipe(zip(flow([])))
 
-  //     const result = [...numbers]
-  //     expect(result).toEqual([])
-  //   })
+      const result = [...numbers]
+      expect(result).toEqual([])
+    })
 
-  //   it('should work with async flows', async () => {
-  //     async function* asyncSource() {
-  //       yield 'a'
-  //       yield 'b'
-  //     }
+    it('should work with async flows', async () => {
+      async function* asyncSource() {
+        yield 'a'
+        yield 'b'
+      }
 
-  //     const numbers = flow([1, 2]).pipe(zip(flow(asyncSource())))
+      const numbers = flow([1, 2]).pipe(zip(flow(asyncSource())))
 
-  //     const result = []
-  //     for await (const value of numbers) {
-  //       result.push(value)
-  //     }
+      const result = []
+      for await (const value of numbers) {
+        result.push(value)
+      }
 
-  //     expect(result).toEqual([
-  //       [1, 'a'],
-  //       [2, 'b'],
-  //     ])
-  //   })
-  // })
+      expect(result).toEqual([
+        [1, 'a'],
+        [2, 'b'],
+      ])
+    })
+  })
 })
