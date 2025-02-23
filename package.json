@@ -1,6 +1,6 @@
 {
   "name": "@tigerabrodioss/sakuraflow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library to do transformations when working with generators.",
   "author": "Tiger Abrodi",
   "license": "MIT",
