@@ -7,6 +7,7 @@ export type Operation<TSource, TResult> = (flow: Flow<TSource>) => Flow<TResult>
 export interface Flow<TValue> {
   [Symbol.iterator](): Iterator<TValue>
   [Symbol.asyncIterator](): AsyncIterator<TValue>
+  isAsync(): boolean
 
   pipe<A>(op1: Operation<TValue, A>): Flow<A>
 

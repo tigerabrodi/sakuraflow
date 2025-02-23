@@ -3,6 +3,10 @@ import type { Flow, IterableInput, Operation } from './types'
 export class FlowImpl<TValue> implements Flow<TValue> {
   constructor(private source: IterableInput<TValue>) {}
 
+  isAsync(): boolean {
+    return Symbol.asyncIterator in this.source
+  }
+
   // This is the reason why e.g. if array you can do
   // const result = [...flow([1, 2, 3])]
   // and get [1, 2, 3]
