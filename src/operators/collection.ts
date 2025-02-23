@@ -1,6 +1,22 @@
 import { flow } from '../core/flow'
 import type { Flow, Operation } from '../core/types'
 
+/**
+ * Creates an operation that groups values into batches of a specified size.
+ * The last batch may be smaller if there aren't enough values to fill it.
+ *
+ * @param size - The size of each batch
+ *
+ * @example
+ * ```ts
+ * const numbers = flow([1, 2, 3, 4, 5]).pipe(
+ *   batch(2)
+ * )
+ *
+ * const result = [...numbers]
+ * // Result: [[1, 2], [3, 4], [5]]
+ * ```
+ */
 export function batch<TValue>(size: number): Operation<TValue, Array<TValue>> {
   return (flowInput: Flow<TValue>): Flow<Array<TValue>> => {
     function* batchGenerator() {
@@ -26,6 +42,22 @@ export function batch<TValue>(size: number): Operation<TValue, Array<TValue>> {
   }
 }
 
+/**
+ * Creates an operation that yields sliding windows of values of a specified size.
+ * Each window contains the specified number of consecutive values from the source.
+ *
+ * @param size - The size of each window
+ *
+ * @example
+ * ```ts
+ * const numbers = flow([1, 2, 3, 4]).pipe(
+ *   window(2)
+ * )
+ *
+ * const result = [...numbers]
+ * // Result: [[1, 2], [2, 3], [3, 4]]
+ * ```
+ */
 export function window<TValue>(size: number): Operation<TValue, Array<TValue>> {
   return (flowInput: Flow<TValue>): Flow<Array<TValue>> => {
     function* windowGenerator() {

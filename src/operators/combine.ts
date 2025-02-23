@@ -1,6 +1,22 @@
 import { flow } from '../core/flow'
 import type { Flow, Operation } from '../core/types'
 
+/**
+ * Creates an operation that concatenates multiple flows together in sequence.
+ * Values from each flow are emitted in order after the previous flow completes.
+ *
+ * @param flows - The flows to concatenate after the source flow
+ *
+ * @example
+ * ```ts
+ * const numbers = flow([1, 2]).pipe(
+ *   concat(flow([3, 4]), flow([5, 6]))
+ * )
+ *
+ * const result = [...numbers]
+ * // Result: [1, 2, 3, 4, 5, 6]
+ * ```
+ */
 export function concat<TValue>(
   ...flows: Array<Flow<TValue>>
 ): Operation<TValue, TValue> {
@@ -22,6 +38,22 @@ export function concat<TValue>(
   }
 }
 
+/**
+ * Creates an operation that combines values from two flows into pairs.
+ * Each pair contains one value from each flow. The operation completes when either flow completes.
+ *
+ * @param otherFlow - The flow to combine with the source flow
+ *
+ * @example
+ * ```ts
+ * const numbers = flow([1, 2, 3]).pipe(
+ *   zip(flow(['a', 'b', 'c']))
+ * )
+ *
+ * const result = [...numbers]
+ * // Result: [[1, 'a'], [2, 'b'], [3, 'c']]
+ * ```
+ */
 export function zip<TValue, TOther>(
   otherFlow: Flow<TOther>
 ): Operation<TValue, [TValue, TOther]> {

@@ -1,6 +1,21 @@
 import { flow } from '../core/flow'
 import type { Flow, Operation } from '../core/types'
 
+/**
+ * Creates an operation that takes only the first n values from the flow.
+ *
+ * @param n - The number of values to take
+ *
+ * @example
+ * ```ts
+ * const numbers = flow([1, 2, 3, 4, 5]).pipe(
+ *   take(3)
+ * )
+ *
+ * const result = [...numbers]
+ * // Result: [1, 2, 3]
+ * ```
+ */
 export function take<TValue>(n: number): Operation<TValue, TValue> {
   return (flowInput: Flow<TValue>): Flow<TValue> => {
     function* takeGenerator() {
@@ -17,6 +32,21 @@ export function take<TValue>(n: number): Operation<TValue, TValue> {
   }
 }
 
+/**
+ * Creates an operation that skips the first n values from the flow.
+ *
+ * @param n - The number of values to skip
+ *
+ * @example
+ * ```ts
+ * const numbers = flow([1, 2, 3, 4, 5]).pipe(
+ *   skip(2)
+ * )
+ *
+ * const result = [...numbers]
+ * // Result: [3, 4, 5]
+ * ```
+ */
 export function skip<TValue>(n: number): Operation<TValue, TValue> {
   return (flowInput: Flow<TValue>): Flow<TValue> => {
     function* skipGenerator() {
@@ -34,6 +64,22 @@ export function skip<TValue>(n: number): Operation<TValue, TValue> {
   }
 }
 
+/**
+ * Creates an operation that takes values from the flow as long as they satisfy the predicate.
+ * Stops taking values as soon as the predicate returns false.
+ *
+ * @param predicate - Function that tests each value
+ *
+ * @example
+ * ```ts
+ * const numbers = flow([1, 2, 3, 4, 1]).pipe(
+ *   takeWhile(x => x < 4)
+ * )
+ *
+ * const result = [...numbers]
+ * // Result: [1, 2, 3]
+ * ```
+ */
 export function takeWhile<TValue>(
   predicate: (value: TValue) => boolean
 ): Operation<TValue, TValue> {
@@ -52,6 +98,22 @@ export function takeWhile<TValue>(
   }
 }
 
+/**
+ * Creates an operation that skips values from the flow as long as they satisfy the predicate.
+ * Starts taking values as soon as the predicate returns false and continues taking all subsequent values.
+ *
+ * @param predicate - Function that tests each value
+ *
+ * @example
+ * ```ts
+ * const numbers = flow([1, 2, 3, 4, 1]).pipe(
+ *   skipWhile(x => x < 3)
+ * )
+ *
+ * const result = [...numbers]
+ * // Result: [3, 4, 1]
+ * ```
+ */
 export function skipWhile<TValue>(
   predicate: (value: TValue) => boolean
 ): Operation<TValue, TValue> {

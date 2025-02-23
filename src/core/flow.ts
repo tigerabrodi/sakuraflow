@@ -119,6 +119,37 @@ export class FlowImpl<TValue> implements Flow<TValue> {
   }
 }
 
+/**
+ * Creates a Flow instance from an iterable or async iterable source.
+ * A Flow allows you to chain multiple operations using the pipe method,
+ * processing data in a lazy, streaming fashion.
+ *
+ * @param source - An iterable or async iterable input source
+ * @returns A Flow instance that can be used to chain operations
+ *
+ * @example
+ * ```ts
+ * const numbers = flow([1, 2, 3, 4, 5])
+ *   .pipe(
+ *     map(x => x * 2),
+ *     filter(x => x > 5)
+ *   );
+ *
+ * // Synchronously iterate
+ * for (const num of numbers) {
+ *   console.log(num); // Outputs: 6, 8, 10
+ * }
+ *
+ * // Or with async source
+ * const asyncNumbers = flow(async function* () {
+ *   yield* [1, 2, 3];
+ * }());
+ *
+ * for await (const num of asyncNumbers) {
+ *   console.log(num); // Outputs: 1, 2, 3
+ * }
+ * ```
+ */
 export function flow<TValue>(source: IterableInput<TValue>): Flow<TValue> {
   return new FlowImpl(source)
 }
